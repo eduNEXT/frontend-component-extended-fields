@@ -4,33 +4,35 @@ import ProfileFields from './profile-fields';
 
 const ExtendedProfileFields = (props) => {
   const {
-    fetchProfile, patchProfile, extendedProfileValues, SwitchContent, EmptyContent, EditableItemHeader,
+    refreshUserProfile, updateUserProfile, profileFieldValues, formComponents,
   } = props;
 
   return (
     <ExtendedProfileFieldsProvider
-      patchProfile={patchProfile}
-      components={{ SwitchContent, EmptyContent, EditableItemHeader }}
+      patchProfile={updateUserProfile}
+      components={formComponents}
     >
       <ProfileFields
-        fetchProfile={fetchProfile}
-        patchProfile={patchProfile}
-        extendedProfileValues={extendedProfileValues}
+        fetchProfile={refreshUserProfile}
+        patchProfile={updateUserProfile}
+        extendedProfileValues={profileFieldValues}
       />
     </ExtendedProfileFieldsProvider>
   );
 };
 
 ExtendedProfileFields.propTypes = {
-  fetchProfile: PropTypes.func,
-  patchProfile: PropTypes.func,
-  extendedProfileValues: PropTypes.arrayOf(PropTypes.shape({
-    fieldNabel: PropTypes.string,
+  refreshUserProfile: PropTypes.func,
+  updateUserProfile: PropTypes.func,
+  profileFieldValues: PropTypes.arrayOf(PropTypes.shape({
+    fieldLabel: PropTypes.string,
     fieldValue: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
   })),
-  SwitchContent: PropTypes.node,
-  EmptyContent: PropTypes.node,
-  EditableItemHeader: PropTypes.node,
+  formComponents: PropTypes.shape({
+    SwitchContent: PropTypes.node,
+    EmptyContent: PropTypes.node,
+    EditableItemHeader: PropTypes.node,
+  }),
 };
 
 export default ExtendedProfileFields;
