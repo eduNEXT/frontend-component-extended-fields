@@ -1,4 +1,3 @@
-
-import ExtendedProfileFields from './extended-profile'
+import ExtendedProfileFields from './extended-profile';
 
 export { ExtendedProfileFields };
