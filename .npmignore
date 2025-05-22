@@ -1,6 +1,7 @@
 .eslintignore
 .eslintrc.json
 .gitignore
+.github
 .travis.yml
 docker-compose.yml
 Dockerfile

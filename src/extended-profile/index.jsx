@@ -7,9 +7,6 @@ const ExtendedProfileFields = (props) => {
     fetchProfile, patchProfile, extendedProfileValues, SwitchContent, EmptyContent, EditableItemHeader,
   } = props;
 
-  console.log(props)
-
-
   return (
     <ExtendedProfileFieldsProvider
       patchProfile={patchProfile}
