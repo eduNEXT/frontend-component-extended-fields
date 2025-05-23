@@ -36,6 +36,11 @@ const messages = defineMessages({
     defaultMessage: 'This field must be at most {maxLength} characters long.',
     description: 'Error message when the field is too long',
   },
+  'account.settings.editable.field.action.edit': {
+    id: 'account.settings.editable.field.action.edit',
+    defaultMessage: 'Edit',
+    description: 'A button label',
+  },
 });
 
 export default messages;

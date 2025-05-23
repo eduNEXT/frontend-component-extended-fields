@@ -3,4 +3,5 @@ export const FORM_MODE = {
   EDITABLE: 'editable',
   EMPTY: 'empty',
   STATIC: 'static',
+  DEFAULT: 'default',
 };

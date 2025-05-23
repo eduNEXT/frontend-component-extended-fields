@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import ExtendedProfileFieldsContext from './ExtendedProfileContext';
 import { getExtendedProfileFields } from './data/service';
 
+import { moveCheckboxFieldsToEnd } from './utils';
+
 import { FORM_MODE } from './constants';
 
 const ExtendedProfileFieldsProvider = ({ patchProfile, components, children }) => {
@@ -14,7 +16,7 @@ const ExtendedProfileFieldsProvider = ({ patchProfile, components, children }) =
   React.useEffect(() => {
     (async () => {
       const res = await getExtendedProfileFields();
-      setExtendedProfileFields(res.fields);
+      setExtendedProfileFields(res.fields.sort(moveCheckboxFieldsToEnd));
     })();
   }, []);
 
@@ -23,8 +25,8 @@ const ExtendedProfileFieldsProvider = ({ patchProfile, components, children }) =
     setEditingInput(fieldName);
   };
 
-  const handleSaveExtendedProfile = async (username, params) => {
-    await patchProfile(username, params);
+  const handleSaveExtendedProfile = async (params) => {
+    await patchProfile(params);
   };
 
   const handleResetFormEdition = () => {
@@ -49,6 +51,7 @@ const ExtendedProfileFieldsProvider = ({ patchProfile, components, children }) =
       handleChangeSaveState,
       components,
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [editMode, editingInput, extendedProfileFields, saveState],
   );
 
@@ -57,6 +60,12 @@ const ExtendedProfileFieldsProvider = ({ patchProfile, components, children }) =
 
 ExtendedProfileFieldsProvider.propTypes = {
   children: PropTypes.node || PropTypes.arrayOf(PropTypes.node),
+  patchProfile: PropTypes.func,
+  components: PropTypes.shape({
+    SwitchContent: PropTypes.node,
+    EmptyContent: PropTypes.node,
+    EditableItemHeader: PropTypes.node,
+  }),
 };
 
 export default ExtendedProfileFieldsProvider;
