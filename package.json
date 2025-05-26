@@ -1,8 +1,8 @@
 {
 	"name": "@edunext/frontend-component-extended-fields",
-	"version": "1.0.1-alpha",
+	"version": "1.0.2-alpha",
 	"description": "Site extended profile Plugincomponent utilizing Frontend Plugin Framework",
-	"main": "src/index.js",
+	"main": "dist/index.js",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/edunext/frontend-component-extended-fields.git"
