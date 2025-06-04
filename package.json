@@ -1,6 +1,6 @@
 {
 	"name": "@edunext/frontend-component-extended-fields",
-	"version": "1.0.3-alpha",
+	"version": "1.0.4-alpha",
 	"description": "Site extended profile Plugincomponent utilizing Frontend Plugin Framework",
 	"main": "dist/index.js",
 	"repository": {

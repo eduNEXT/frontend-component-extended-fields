@@ -31,7 +31,7 @@ const ProfileFields = ({ fetchProfile, extendedProfileValues }) => {
     });
 
     try {
-      await saveProfile(user.username, { extendedProfile: newFields });
+      await saveProfile({ username:user.username, params: { extendedProfile: newFields }});
       fetchProfile(user.username);
     } catch (error) {
       handleChangeSaveState('error');

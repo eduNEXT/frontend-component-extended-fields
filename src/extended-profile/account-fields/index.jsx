@@ -30,7 +30,7 @@ const AccountFields = ({ extendedProfileValues }) => {
     });
 
     try {
-      await saveProfile({ extendedProfile: newFields });
+      await saveProfile({ params: { extendedProfile: newFields }});
     } catch (error) {
       handleChangeSaveState('error');
     } finally {

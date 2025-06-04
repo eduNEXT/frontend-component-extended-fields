@@ -25,8 +25,9 @@ const ExtendedProfileFieldsProvider = ({ patchProfile, components, children }) =
     setEditingInput(fieldName);
   };
 
-  const handleSaveExtendedProfile = async (params) => {
-    await patchProfile(params);
+  const handleSaveExtendedProfile = async ({ username, params }) => {
+    if (username) await patchProfile(username, params);
+    else await patchProfile(params);
   };
 
   const handleResetFormEdition = () => {
