@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ExtendedProfileFieldsContext from './ExtendedProfileContext';
-import { getExtendedProfileFields } from './data/service';
+import { getExtendedProfileFields, getExtendedProfileFields_V2 } from './data/service';
 
 import { moveCheckboxFieldsToEnd } from './utils';
 
@@ -15,8 +15,8 @@ const ExtendedProfileFieldsProvider = ({ patchProfile, components, children }) =
 
   React.useEffect(() => {
     (async () => {
-      const res = await getExtendedProfileFields();
-      setExtendedProfileFields(res.fields.sort(moveCheckboxFieldsToEnd));
+      const res_v2 = await getExtendedProfileFields_V2();
+      setExtendedProfileFields(res_v2.fields.sort(moveCheckboxFieldsToEnd));
     })();
   }, []);
 
