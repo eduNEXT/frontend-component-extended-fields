@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ExtendedProfileFieldsContext from './ExtendedProfileContext';
-import { getExtendedProfileFields, getExtendedProfileFields_V2 } from './data/service';
+import { getExtendedProfileFieldsV2 } from './data/service';
 
 import { moveCheckboxFieldsToEnd } from './utils';
 
 import { FORM_MODE } from './constants';
 
-const ExtendedProfileFieldsProvider = ({ patchProfile, components, children }) => {
+const ExtendedProfileFieldsProvider = ({
+  patchProfile, profileFieldErrors, components, children,
+}) => {
   const [extendedProfileFields, setExtendedProfileFields] = React.useState();
   const [editMode, setEditMode] = React.useState(FORM_MODE.EDITABLE);
   const [editingInput, setEditingInput] = React.useState(null);
@@ -15,10 +17,22 @@ const ExtendedProfileFieldsProvider = ({ patchProfile, components, children }) =
 
   React.useEffect(() => {
     (async () => {
-      const res_v2 = await getExtendedProfileFields_V2();
-      setExtendedProfileFields(res_v2.fields.sort(moveCheckboxFieldsToEnd));
+      const resv2 = await getExtendedProfileFieldsV2();
+      setExtendedProfileFields(resv2.fields.sort(moveCheckboxFieldsToEnd));
     })();
   }, []);
+
+  useEffect(() => {
+    if (Object.keys(profileFieldErrors).length) {
+      setSaveState('error');
+      setEditMode(FORM_MODE.EDITING);
+      setEditingInput(Object.keys(profileFieldErrors)[0]);
+    } else {
+      setSaveState('default');
+      setEditMode(FORM_MODE.EDITABLE);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [Object.keys(profileFieldErrors).length]);
 
   const handleChangeFormMode = (mode, fieldName = null) => {
     setEditMode(mode);
@@ -26,14 +40,16 @@ const ExtendedProfileFieldsProvider = ({ patchProfile, components, children }) =
   };
 
   const handleSaveExtendedProfile = async ({ username, params }) => {
-    if (username) await patchProfile(username, params);
-    else await patchProfile(params);
+    if (username) { return patchProfile(username, params); }
+    return patchProfile(params);
   };
 
   const handleResetFormEdition = () => {
-    setEditMode(FORM_MODE.EDITABLE);
-    setEditingInput(null);
-    setSaveState('default');
+    if (!Object.keys(profileFieldErrors).length) {
+      setEditMode(FORM_MODE.EDITABLE);
+      setEditingInput(null);
+      setSaveState('default');
+    }
   };
 
   const handleChangeSaveState = (state) => {
@@ -46,6 +62,7 @@ const ExtendedProfileFieldsProvider = ({ patchProfile, components, children }) =
       extendedProfileFields,
       editingInput,
       saveState,
+      profileFieldErrors,
       handleChangeFormMode,
       handleResetFormEdition,
       handleSaveExtendedProfile,
@@ -53,7 +70,7 @@ const ExtendedProfileFieldsProvider = ({ patchProfile, components, children }) =
       components,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [editMode, editingInput, extendedProfileFields, saveState],
+    [editMode, editingInput, extendedProfileFields, saveState, Object.keys(profileFieldErrors)],
   );
 
   return <ExtendedProfileFieldsContext.Provider value={value}>{children}</ExtendedProfileFieldsContext.Provider>;

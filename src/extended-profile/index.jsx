@@ -5,7 +5,7 @@ import AccountFields from './account-fields';
 
 const ExtendedProfileFields = (props) => {
   const {
-    id, refreshUserProfile, updateUserProfile, profileFieldValues, formComponents,
+    id, refreshUserProfile, updateUserProfile, profileFieldValues, formComponents, profileFieldErrors,
   } = props;
 
   const isFromAccountMFE = id.includes('account');
@@ -13,20 +13,16 @@ const ExtendedProfileFields = (props) => {
   return (
     <ExtendedProfileFieldsProvider
       patchProfile={updateUserProfile}
+      profileFieldErrors={profileFieldErrors ?? {}}
       components={formComponents}
     >
       {isFromAccountMFE
         ? (
-          <AccountFields
-            fetchProfile={refreshUserProfile}
-            patchProfile={updateUserProfile}
-            extendedProfileValues={profileFieldValues}
-          />
+          <AccountFields extendedProfileValues={profileFieldValues} />
         )
         : (
           <ProfileFields
             fetchProfile={refreshUserProfile}
-            patchProfile={updateUserProfile}
             extendedProfileValues={profileFieldValues}
           />
         )}

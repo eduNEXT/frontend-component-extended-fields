@@ -27,6 +27,7 @@ const BaseField = ({
   renderEditingField,
   renderEditableField,
   renderEmptyField,
+  savingErrors,
 }) => {
   const { formatMessage } = useIntl();
 
@@ -39,6 +40,7 @@ const BaseField = ({
     formEditMode,
     activeFieldName,
     fieldRestrictions,
+    savingErrors,
   });
 
   const {

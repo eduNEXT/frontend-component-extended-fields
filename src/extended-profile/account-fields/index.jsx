@@ -10,6 +10,7 @@ import SelectField from './elements/SelectField';
 const AccountFields = ({ extendedProfileValues }) => {
   const {
     extendedProfileFields,
+    profileFieldErrors,
     editMode: formEditMode,
     editingInput: activeFieldName,
     handleChangeFormMode: setFormMode,
@@ -30,12 +31,10 @@ const AccountFields = ({ extendedProfileValues }) => {
     });
 
     try {
-      await saveProfile({ params: { extendedProfile: newFields }});
+      await saveProfile({ params: { extendedProfile: newFields } });
+      handleResetFormEdition();
     } catch (error) {
       handleChangeSaveState('error');
-    } finally {
-      handleChangeSaveState('complete');
-      handleResetFormEdition();
     }
   };
   return (
@@ -53,6 +52,7 @@ const AccountFields = ({ extendedProfileValues }) => {
           setFormMode,
           handleFormSubmit,
           saveState,
+          savingErrors: profileFieldErrors,
         };
 
         return (

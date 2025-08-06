@@ -4,7 +4,7 @@ import { FORM_MODE } from '../constants';
 import messages from '../messages';
 
 const useFieldController = ({
-  name: fieldName, value: fieldValue, errorMessages, formEditMode, activeFieldName, fieldRestrictions,
+  name: fieldName, value: fieldValue, errorMessages, formEditMode, activeFieldName, fieldRestrictions, savingErrors,
 }) => {
   const { formatMessage } = useIntl();
   const [draftValue, setDraftValue] = useState(fieldValue);
@@ -24,6 +24,11 @@ const useFieldController = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [draftValue?.length]);
+
+  useEffect(() => {
+    setFieldError(savingErrors[fieldName]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [Object.keys(savingErrors).length]);
 
   const isFieldBeingEdited = formEditMode === FORM_MODE.EDITING && activeFieldName === fieldName;
 

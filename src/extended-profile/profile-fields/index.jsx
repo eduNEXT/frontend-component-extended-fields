@@ -20,6 +20,8 @@ const ProfileFields = ({ fetchProfile, extendedProfileValues }) => {
     components: { SwitchContent },
   } = useContext(ExtendedProfileFieldsContext);
 
+  const [savingErrors, setSavingErrors] = React.useState({});
+
   const handleFormSubmit = async (fieldName, fieldValue) => {
     handleChangeSaveState('pending');
     const user = getAuthenticatedUser();
@@ -31,13 +33,17 @@ const ProfileFields = ({ fetchProfile, extendedProfileValues }) => {
     });
 
     try {
-      await saveProfile({ username:user.username, params: { extendedProfile: newFields }});
+      await saveProfile({ username: user.username, params: { extendedProfile: newFields } });
       fetchProfile(user.username);
-    } catch (error) {
-      handleChangeSaveState('error');
-    } finally {
-      handleChangeSaveState('complete');
       handleResetFormEdition();
+    } catch (error) {
+      setSavingErrors(
+        Object.fromEntries(
+          Object.entries(error.processedData.fieldErrors)
+            .map(([key, value]) => [key, value.userMessage]),
+        ),
+      );
+      handleChangeSaveState('error');
     }
   };
   return (
@@ -55,6 +61,7 @@ const ProfileFields = ({ fetchProfile, extendedProfileValues }) => {
           setFormMode,
           handleFormSubmit,
           saveState,
+          savingErrors,
         };
 
         return (
