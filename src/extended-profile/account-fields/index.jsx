@@ -15,7 +15,6 @@ const AccountFields = ({ extendedProfileValues }) => {
     editingInput: activeFieldName,
     handleChangeFormMode: setFormMode,
     handleSaveExtendedProfile: saveProfile,
-    handleResetFormEdition,
     handleChangeSaveState,
     saveState,
     components: { SwitchContent },
@@ -30,12 +29,7 @@ const AccountFields = ({ extendedProfileValues }) => {
       return field;
     });
 
-    try {
-      await saveProfile({ params: { extendedProfile: newFields } });
-      handleResetFormEdition();
-    } catch (error) {
-      handleChangeSaveState('error');
-    }
+    saveProfile({ params: { extendedProfile: newFields } });
   };
   return (
     <div>

@@ -45,11 +45,9 @@ const ExtendedProfileFieldsProvider = ({
   };
 
   const handleResetFormEdition = () => {
-    if (!Object.keys(profileFieldErrors).length) {
-      setEditMode(FORM_MODE.EDITABLE);
-      setEditingInput(null);
-      setSaveState('default');
-    }
+    setEditMode(FORM_MODE.EDITABLE);
+    setEditingInput(null);
+    setSaveState('default');
   };
 
   const handleChangeSaveState = (state) => {
@@ -79,6 +77,9 @@ const ExtendedProfileFieldsProvider = ({
 ExtendedProfileFieldsProvider.propTypes = {
   children: PropTypes.node || PropTypes.arrayOf(PropTypes.node),
   patchProfile: PropTypes.func,
+  profileFieldErrors: PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.string),
+  ),
   components: PropTypes.shape({
     SwitchContent: PropTypes.node,
     EmptyContent: PropTypes.node,

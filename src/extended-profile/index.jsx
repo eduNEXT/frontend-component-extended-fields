@@ -43,6 +43,9 @@ ExtendedProfileFields.propTypes = {
     EmptyContent: PropTypes.node,
     EditableItemHeader: PropTypes.node,
   }),
+  profileFieldErrors: PropTypes.arrayOf(
+    PropTypes.objectOf(PropTypes.string),
+  ),
 };
 
 export default ExtendedProfileFields;

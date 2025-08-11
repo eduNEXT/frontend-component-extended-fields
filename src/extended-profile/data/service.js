@@ -23,9 +23,12 @@ export async function getExtendedProfileFieldsV2() {
       throw e;
     });
 
+  const optionalFields = Object.entries(data.optionalFields.fields)
+    .filter(([key]) => data.optionalFields.extended_profile.includes(key));
+
   const adapted = adaptFields({
     registrationFields: data.registrationFields,
-    optionalFields: data.optionalFields,
+    optionalFields: { fields: Object.fromEntries(optionalFields) },
   });
 
   return { fields: adapted };
