@@ -10,6 +10,8 @@ const ExtendedProfileFields = (props) => {
 
   const isFromAccountMFE = id.includes('account');
 
+  console.log("EXTENDED FIELDS PROPS", props)
+
   return (
     <ExtendedProfileFieldsProvider
       patchProfile={updateUserProfile}
