@@ -20,6 +20,7 @@ const ExtendedProfileFields = (props) => {
       prevLangRef.current
     && prevLangRef.current !== openedxLanguagePreference
     ) {
+      /** Reload the page when the language preference changes */
       window.location.reload();
     }
 
