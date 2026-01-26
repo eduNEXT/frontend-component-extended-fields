@@ -63,7 +63,9 @@ const BaseField = ({
   };
 
   const renderEmptyLabel = () => (
-    <Button variant="link" onClick={() => handleStartEditing()} className="p-0">Add {fieldLabel}</Button>
+    <Button variant="link" onClick={() => handleStartEditing()} className="p-0">
+      {formatMessage(messages['account.settings.editable.field.action.add'], { fieldLabel })}
+    </Button>
   );
 
   const renderValue = (rawValue) => {

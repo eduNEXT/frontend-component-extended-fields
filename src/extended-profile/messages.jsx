@@ -41,6 +41,11 @@ const messages = defineMessages({
     defaultMessage: 'Edit',
     description: 'A button label',
   },
+  'account.settings.editable.field.action.add': {
+    id: 'account.settings.editable.field.action.add',
+    defaultMessage: 'Add {fieldLabel}',
+    description: 'A button label to add a new field value',
+  },
 });
 
 export default messages;
