@@ -20,6 +20,7 @@ const ExtendedProfileFields = props => {
     profileFieldErrors
   } = props;
   const isFromAccountMFE = id.includes('account');
+  console.log("EXTENDED FIELDS PROPS", props);
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ExtendedProfileProvider.default, {
     patchProfile: updateUserProfile,
     profileFieldErrors: profileFieldErrors ?? {},
