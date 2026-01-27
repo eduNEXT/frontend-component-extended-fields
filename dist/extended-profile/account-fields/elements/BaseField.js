@@ -68,11 +68,13 @@ const BaseField = _ref => {
     event.preventDefault();
     handleFormSubmit(fieldName, draftValue);
   };
-  const renderEmptyLabel = () => /*#__PURE__*/(0, _jsxRuntime.jsxs)(_paragon.Button, {
+  const renderEmptyLabel = () => /*#__PURE__*/(0, _jsxRuntime.jsx)(_paragon.Button, {
     variant: "link",
     onClick: () => handleStartEditing(),
     className: "p-0",
-    children: ["Add ", fieldLabel]
+    children: formatMessage(_messages.default['account.settings.editable.field.action.add'], {
+      fieldLabel
+    })
   });
   const renderValue = rawValue => {
     if (!rawValue) {

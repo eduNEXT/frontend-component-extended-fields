@@ -31,6 +31,7 @@ const AccountFields = _ref => {
     handleChangeFormMode: setFormMode,
     handleSaveExtendedProfile: saveProfile,
     handleChangeSaveState,
+    handleResetFormEdition,
     saveState,
     components: {
       SwitchContent
@@ -46,11 +47,17 @@ const AccountFields = _ref => {
       }
       return field;
     });
-    saveProfile({
-      params: {
-        extendedProfile: newFields
-      }
-    });
+    try {
+      saveProfile({
+        params: {
+          extendedProfile: newFields
+        }
+      });
+    } catch (error) {
+      console.error('Error saving profile field:', error);
+    } finally {
+      handleResetFormEdition();
+    }
   };
   return /*#__PURE__*/(0, _jsxRuntime.jsx)("div", {
     children: extendedProfileFields?.map(field => {

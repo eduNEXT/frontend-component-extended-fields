@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 var _propTypes = _interopRequireDefault(require("prop-types"));
+var _i18n = require("@edx/frontend-platform/i18n");
+var _react = require("react");
 var _ExtendedProfileProvider = _interopRequireDefault(require("./ExtendedProfileProvider"));
 var _profileFields = _interopRequireDefault(require("./profile-fields"));
 var _accountFields = _interopRequireDefault(require("./account-fields"));
@@ -20,7 +22,15 @@ const ExtendedProfileFields = props => {
     profileFieldErrors
   } = props;
   const isFromAccountMFE = id.includes('account');
-  console.log("EXTENDED FIELDS PROPS", props);
+  const openedxLanguagePreference = (0, _i18n.getLocale)();
+  const prevLangRef = (0, _react.useRef)();
+  (0, _react.useEffect)(() => {
+    if (prevLangRef.current && prevLangRef.current !== openedxLanguagePreference) {
+      /** Reload the page when the language preference changes */
+      window.location.reload();
+    }
+    prevLangRef.current = openedxLanguagePreference;
+  }, [openedxLanguagePreference]);
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(_ExtendedProfileProvider.default, {
     patchProfile: updateUserProfile,
     profileFieldErrors: profileFieldErrors ?? {},
