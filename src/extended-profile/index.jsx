@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+import { getLocale } from '@edx/frontend-platform/i18n';
+import { useEffect, useRef } from 'react';
 import ExtendedProfileFieldsProvider from './ExtendedProfileProvider';
 import ProfileFields from './profile-fields';
 import AccountFields from './account-fields';
@@ -9,6 +11,21 @@ const ExtendedProfileFields = (props) => {
   } = props;
 
   const isFromAccountMFE = id.includes('account');
+
+  const openedxLanguagePreference = getLocale();
+  const prevLangRef = useRef();
+
+  useEffect(() => {
+    if (
+      prevLangRef.current
+    && prevLangRef.current !== openedxLanguagePreference
+    ) {
+      /** Reload the page when the language preference changes */
+      window.location.reload();
+    }
+
+    prevLangRef.current = openedxLanguagePreference;
+  }, [openedxLanguagePreference]);
 
   return (
     <ExtendedProfileFieldsProvider
