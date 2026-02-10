@@ -83,7 +83,10 @@ const BaseField = _ref => {
       }
       return renderEmptyLabel();
     }
-    return rawValue;
+
+    // If it is a select field, we want to display the option label instead of the value
+    const fieldOption = fieldOptions?.find(option => option.value === rawValue);
+    return fieldOption ? fieldOption.name : rawValue;
   };
   return /*#__PURE__*/(0, _jsxRuntime.jsx)(SwitchContent, {
     expression: getFieldDisplayMode(),
