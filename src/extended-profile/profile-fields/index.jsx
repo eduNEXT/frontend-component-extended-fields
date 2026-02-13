@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
+import PropTypes from 'prop-types';
 
 import ExtendedProfileFieldsContext from '../ExtendedProfileContext';
 
@@ -78,6 +79,16 @@ const ProfileFields = ({ fetchProfile, extendedProfileValues }) => {
       })}
     </div>
   );
+};
+
+ProfileFields.propTypes = {
+  fetchProfile: PropTypes.func.isRequired,
+  extendedProfileValues: PropTypes.arrayOf(
+    PropTypes.shape({
+      fieldName: PropTypes.string.isRequired,
+      fieldValue: PropTypes.string,
+    }),
+  ).isRequired,
 };
 
 export default ProfileFields;
