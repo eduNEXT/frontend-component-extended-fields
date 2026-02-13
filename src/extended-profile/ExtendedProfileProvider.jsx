@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { getAuthenticatedHttpClient } from '@edx/frontend-platform/auth';
 import ExtendedProfileFieldsContext from './ExtendedProfileContext';
 import { getExtendedProfileFieldsV2 } from './data/service';
 
@@ -10,10 +11,12 @@ import { FORM_MODE } from './constants';
 const ExtendedProfileFieldsProvider = ({
   patchProfile, profileFieldErrors, components, children,
 }) => {
+  const editingInputRef = React.useRef(null);
   const [extendedProfileFields, setExtendedProfileFields] = React.useState();
   const [editMode, setEditMode] = React.useState(FORM_MODE.EDITABLE);
   const [editingInput, setEditingInput] = React.useState(null);
   const [saveState, setSaveState] = React.useState('default');
+  const [localErrors, setLocalErrors] = React.useState({});
 
   React.useEffect(() => {
     (async () => {
@@ -23,20 +26,25 @@ const ExtendedProfileFieldsProvider = ({
   }, []);
 
   useEffect(() => {
-    if (Object.keys(profileFieldErrors).length) {
+    const filteredKeys = Object.keys(profileFieldErrors)
+      .filter(key => key !== 'extended_profile');
+
+    if (filteredKeys.length > 0 || Object.keys(localErrors).length) {
       setSaveState('error');
       setEditMode(FORM_MODE.EDITING);
-      setEditingInput(Object.keys(profileFieldErrors)[0]);
+      setEditingInput(filteredKeys?.[0] ?? localErrors ? editingInputRef.current : null);
     } else {
       setSaveState('default');
       setEditMode(FORM_MODE.EDITABLE);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [Object.keys(profileFieldErrors).length]);
+  }, [Object.keys(profileFieldErrors).length, Object.keys(localErrors).length]);
 
   const handleChangeFormMode = (mode, fieldName = null) => {
     setEditMode(mode);
     setEditingInput(fieldName);
+    setSaveState('default');
+    editingInputRef.current = fieldName;
   };
 
   const handleSaveExtendedProfile = async ({ username, params }) => {
@@ -54,13 +62,58 @@ const ExtendedProfileFieldsProvider = ({
     setSaveState(state);
   };
 
+  useEffect(() => {
+    const httpClient = getAuthenticatedHttpClient?.();
+
+    const interceptor = httpClient.interceptors.response.use(
+      res => {
+        if (res.config.url.includes('user/v1/accounts/')) {
+          setLocalErrors((prevState) => {
+            const fieldName = editingInputRef.current;
+
+            if (!fieldName) { return prevState; }
+
+            const { [fieldName]: _, ...rest } = prevState;
+            return rest;
+          });
+          editingInputRef.current = null;
+          handleResetFormEdition();
+        }
+        return res;
+      },
+      error => {
+        if (
+          error.response?.status === 400
+          && error.response.config.url.includes('user/v1/accounts/')
+        ) {
+          const fieldErrors = error.response.data?.field_errors;
+
+          if (fieldErrors) {
+            setLocalErrors({ [editingInputRef.current]: fieldErrors.extended_profile.user_message });
+          }
+        }
+
+        return Promise.reject(error);
+      },
+    );
+
+    return () => {
+      httpClient.interceptors.response.eject(interceptor);
+    };
+  }, []);
+
+  const mergedErrors = {
+    ...profileFieldErrors,
+    ...localErrors,
+  };
+
   const value = React.useMemo(
     () => ({
       editMode,
       extendedProfileFields,
       editingInput,
       saveState,
-      profileFieldErrors,
+      profileFieldErrors: mergedErrors,
       handleChangeFormMode,
       handleResetFormEdition,
       handleSaveExtendedProfile,
