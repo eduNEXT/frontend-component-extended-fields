@@ -167,6 +167,7 @@ BaseField.propTypes = {
       label: PropTypes.string.isRequired,
     }),
   ),
+  savingErrors: PropTypes.arrayOf(PropTypes.objectOf(PropTypes.string)),
 };
 
 BaseField.defaultProps = {
