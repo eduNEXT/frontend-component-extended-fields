@@ -179,7 +179,8 @@ BaseField.propTypes = {
   options: _propTypes.default.arrayOf(_propTypes.default.shape({
     value: _propTypes.default.string.isRequired,
     label: _propTypes.default.string.isRequired
-  }))
+  })),
+  savingErrors: _propTypes.default.arrayOf(_propTypes.default.objectOf(_propTypes.default.string))
 };
 BaseField.defaultProps = {
   value: '',

@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = void 0;
 var _react = _interopRequireWildcard(require("react"));
 var _auth = require("@edx/frontend-platform/auth");
+var _propTypes = _interopRequireDefault(require("prop-types"));
 var _ExtendedProfileContext = _interopRequireDefault(require("../ExtendedProfileContext"));
 var _TextField = _interopRequireDefault(require("./elements/TextField"));
 var _CheckboxField = _interopRequireDefault(require("./elements/CheckboxField"));
@@ -91,6 +92,13 @@ const ProfileFields = _ref => {
       });
     })
   });
+};
+ProfileFields.propTypes = {
+  fetchProfile: _propTypes.default.func.isRequired,
+  extendedProfileValues: _propTypes.default.arrayOf(_propTypes.default.shape({
+    fieldName: _propTypes.default.string.isRequired,
+    fieldValue: _propTypes.default.string
+  })).isRequired
 };
 var _default = exports.default = ProfileFields;
 //# sourceMappingURL=index.js.map
