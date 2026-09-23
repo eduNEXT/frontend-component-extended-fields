@@ -12,6 +12,10 @@ import { FORM_MODE } from '../../constants';
 import useFieldController from '../useFieldController';
 import ExtendedProfileFieldsContext from '../../ExtendedProfileContext';
 
+// Used when the host doesn't provide a wrapper (older account MFEs).
+// eslint-disable-next-line react/prop-types
+const NoWrapper = ({ children }) => children;
+
 const BaseField = ({
   name: fieldName,
   value: fieldValue,
@@ -45,7 +49,8 @@ const BaseField = ({
   });
 
   const {
-    components: { SwitchContent },
+    // The account MFE provides its settings field slot as the field wrapper.
+    components: { SwitchContent, AccountSettingsFieldSlot: FieldWrapper = NoWrapper },
   } = useContext(ExtendedProfileFieldsContext);
 
   const handleStartEditing = () => {
@@ -79,7 +84,7 @@ const BaseField = ({
     return fieldOption ? fieldOption.name : rawValue;
   };
 
-  return (
+  const field = (
     <SwitchContent
       expression={getFieldDisplayMode()}
       cases={{
@@ -139,6 +144,14 @@ const BaseField = ({
         ),
       }}
     />
+  );
+
+  // Wrapped in the account MFE's settings field slot, the plugins registered
+  // there apply to these fields as they do to the page's own fields.
+  return (
+    <FieldWrapper fieldName={fieldName} value={fieldValue}>
+      {field}
+    </FieldWrapper>
   );
 };
 

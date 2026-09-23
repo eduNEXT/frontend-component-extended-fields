@@ -59,6 +59,8 @@ ExtendedProfileFields.propTypes = {
     SwitchContent: PropTypes.node,
     EmptyContent: PropTypes.node,
     EditableItemHeader: PropTypes.node,
+    // The account MFE's settings field slot; each field is rendered in it.
+    AccountSettingsFieldSlot: PropTypes.elementType,
   }),
   profileFieldErrors: PropTypes.arrayOf(
     PropTypes.objectOf(PropTypes.string),
